@@ -66,37 +66,64 @@ $intern_id = $_SESSION['intern_id'];
                 </tr>
                 
                 <?php
-                    $sql = "SELECT * FROM `attendance`
-                    WHERE intern_id = '$intern_id' ORDER BY date DESC";
+                    $startDate = date("Y-m-01"); // first day of month
+                    $endDate = date("Y-m-t");    // last day of month
+
+                    $sql = "SELECT date, in_time, out_time FROM attendance 
+                            WHERE intern_id = '$intern_id' ORDER BY date DESC";
                     $result = mysqli_query($conn, $sql);
 
+                    $attendance = [];
                     while($row = mysqli_fetch_assoc($result))
                     {
-                        ?>
-                            <tr>
-                                <td><?php echo $row['date']; ?></td>
-                                <td><?php echo $row['in_time']; ?></td>
-                                <td><?php echo $row['out_time']; ?></td>
-                                <td>
-                                <?php
-                                    if($row['out_time'] != NULL && $row['in_time'] != NULL)
-                                    {
-                                        echo "<span class='badge bg-success'>Present</span>";
-                                    }
-                                    else if($row['in_time'] != NULL && $row['out_time'] == NULL)
-                                    {
-                                        echo "<span class='badge bg-warning'>Half Day</span>";
-                                    }
-                                    else
-                                    {
-                                        echo "<span class='badge bg-danger'>Absent</span>";
-                                    }
-                                ?>
-                                </td>
-                            </tr>
-                        <?php
+                        $attendance[$row['date']] = $row;
                     }
-                ?>
+
+                    $current = strtotime($startDate);
+                    $end = strtotime($endDate);
+
+                    while($current <= $end)
+                    {
+                        $date = date("Y-m-d", $current);
+                    ?>
+                    <tr>
+                        <td><?php echo $date; ?></td>
+
+                        <td>
+                            <?php echo $attendance[$date]['in_time'] ?? "-"; ?>
+                        </td>
+
+                        <td>
+                            <?php echo $attendance[$date]['out_time'] ?? "-"; ?>
+                        </td>
+
+                        <td>
+                            <?php
+                            if(isset($attendance[$date]))
+                            {
+                                $in = $attendance[$date]['in_time'];
+                                $out = $attendance[$date]['out_time'];
+
+                                if($in && !$out)
+                                {
+                                    echo "<span class='badge bg-warning'>Half Day</span>";
+                                }
+                                else if($in && $out)
+                                {
+                                    echo "<span class='badge bg-success'>Present</span>";
+                                }
+                            }
+                            else
+                            {
+                                echo "<span class='badge bg-danger'>Absent</span>";
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php
+                        $current = strtotime("+1 day", $current);
+                    }
+                    ?>
             </table>
         </div>
         <!-- Footer Section -->

@@ -10,7 +10,7 @@
 
 </head>
 <body>
-        <div class="col-lg-2 col-md-2 bg-dark text-white min-vh-100 sticky-top"> 
+        <div class="col-lg-2 col-md-2 bg-dark text-white min-vh-100"> 
 
             <h1 class="mb-5 fs-3 text-center position-relative mt-5 text-decoration-underline">Admin Panel</h1>
             <hr>

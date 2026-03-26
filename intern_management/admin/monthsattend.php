@@ -98,6 +98,8 @@ $endDate = date("Y-m-t", strtotime($startDate));
                                         </td>
                                     </tr>
                                 <?php
+                                    $current = strtotime("+1 day", $current);
+                                    $i++;
                             }
                     }
                 ?>
