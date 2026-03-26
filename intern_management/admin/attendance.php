@@ -56,24 +56,32 @@
                                     </td>
                                     <td>
                                         <?php
-                                        if($rows['in_time'] == NULL)
+                                        // Not logged in
+                                        if(empty($rows['in_time']) && empty($rows['out_time']))
                                         {
                                             echo "<span class='badge bg-danger'>Absent</span>";
                                         }
 
-                                        else if($rows['out_time'] == NULL)
+                                        // Logged in but not logged out
+                                        else if(!empty($rows['in_time']) && !empty($rows['out_time']))
+                                        {
+                                            echo "<span class='badge bg-success'>Present</span>";
+                                        }
+
+                                        else if(!empty($rows['in_time']) && empty($rows['out_time']))
                                         {
                                             echo "<span class='badge bg-warning'>Half Day</span>";
                                         }
 
+                                        // Logged out
                                         else
                                         {
                                             $in = strtotime($rows['in_time']);
                                             $out = strtotime($rows['out_time']);
-                                            
+
                                             $hours = ($out - $in) / 3600;
 
-                                            if($hours >= 8)
+                                            if($hours >= 6)
                                             {
                                                 echo "<span class='badge bg-success'>Present</span>";
                                             }
@@ -99,6 +107,7 @@
     </div>
 </div>
 
+<?php include '../footer.php' ?>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

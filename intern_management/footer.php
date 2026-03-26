@@ -22,7 +22,7 @@
 
             <!-- Company Info -->
             <div class="col-lg-4">
-                <img src="images/logo.jpg" width="80" class="rounded mb-3">
+                <img src="images/logo.jpg" width="80px" class="rounded mb-3">
                 <h5 class="fw-bold">Anmey IT Services</h5>
                 <p>
                     We provide industry oriented internship programs to help students
